@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apollo</title>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+        integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <h3>Welcome To Apollo Pharmacy</h3>
+
+    Locate Store:<input type="text" id="input_pin" placeholder="Enter Pin Code" />
+    <button>Locate</button>
+    <br>
+    <span id="searching" style="display: none;">Searching.......</span>
+    <hr>
+    <div id="result">
+
+    </div>
+
+
+    <script>
+
+
+        $('button').on('click', function () {
+            $('#result').html("")
+            $('#searching').show()
+            let store_pin = $('#input_pin').val()
+            let found = false;
+            $.getJSON("https://script.googleusercontent.com/macros/echo?user_content_key=9SBYwLsGHh905sJWWzoU3nsi6gQKrj-SSsS4uKow9cmf6c6miLftG7TJglO5flQ-DOODaIOpgrXlvmenjCBO4QyRM0ziTRQnm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnL7-M_6a4PveBOHcS4JwzDqJgDGVCjuUOJy8j8YdHrbnHwCFSNm6KvK_7z5KaN0gO3HD9fuf7KSRY83b8ZbW5O5_FcW2wixdAg&lib=MCih0EynNJYEXBU9bzNICBSGtssg7ayfU", function (data) {
+                console.log(data.data)
+                for (let i = 0; i < 10; i++) {
+
+                    if (data.data[i].Pincode == store_pin) {
+                        console.log("Found")
+                        found = true;
+
+                        for (let j = 0; j < data.data[i].Stores.length; j++) {
+                            console.log(data.data[i].Stores[j].storeName)
+                            $('#result').append(data.data[i].Stores[j].storeName + "<br>")
+                        }
+                    }
+                }
+                if (!found) {
+                    $('#result').html("not found")
+                }
+                $('#searching').hide()
+            })
+
+        })
+
+
+
+    </script>
+
+
+</body>
+
+</html>
